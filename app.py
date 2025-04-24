@@ -1,6 +1,7 @@
 from flask import Flask, request, send_file
 from TTS.api import TTS
 import tempfile
+import os
 
 app = Flask(__name__)
 tts = TTS(model_name="tts_models/es/css10/vits", progress_bar=False, gpu=False)
@@ -18,3 +19,7 @@ def tts_api():
 @app.route("/")
 def index():
     return app.send_static_file("index.html")
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
