@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo TTS</title>
+</head>
+<body>
+  <h2>Texto a voz con Coqui</h2>
+  <textarea id="texto" rows="4" cols="50">Hola mundo, esto es una prueba con Coqui TTS</textarea><br>
+  <button onclick="hablar()">Hablar</button>
+  <audio id="player" controls></audio>
+
+  <script>
+    async function hablar() {
+      const texto = document.getElementById("texto").value;
+      const res = await fetch("/tts", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ text: texto })
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        document.getElementById("player").src = URL.createObjectURL(blob);
+      } else {
+        alert("Error al generar audio");
+      }
+    }
+  </script>
+</body>
+</html>
